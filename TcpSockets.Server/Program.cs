@@ -8,7 +8,7 @@ namespace TcpSockets.Server
 {
     public class Program
     {
-        private const string serverIpAddress = "127.0.0.1";
+        private static readonly IPAddress serverIpAddress = IPAddress.Parse("127.0.0.1");
         private static int serverPort = 3000;
 
         public static void Main(string[] args)
@@ -17,9 +17,10 @@ namespace TcpSockets.Server
 
             serverPort = IpConfiguration.PortPrompt();
 
-            TcpListener listener = new TcpListener(IPAddress.Parse(serverIpAddress), serverPort);
+            var listener = new TcpListener(serverIpAddress, serverPort);
             listener.Start();
-            Logger.Log($"Server started. Listening on {serverIpAddress}:{serverPort}.");
+
+            Logger.Log($"Server started. Listening at {listener.LocalEndpoint}.");
 
             while (true)
             {
@@ -30,8 +31,6 @@ namespace TcpSockets.Server
                     new ClientHandler(client).Handle();
                 });
             }
-
-            Console.Read();
         }
     }
 }

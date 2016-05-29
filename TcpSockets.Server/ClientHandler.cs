@@ -20,41 +20,15 @@ namespace TcpSockets.Server
         {
             Logger.Log($"Connection accepted. Client ip: {_client.RemoteEndPoint}");
 
-            var request = ReadRequest(_client);
-
-            WriteResponse(_client, "[Welcome to my server :3] ");
+            var request = _client.RecieveString();
 
             if (request.Trim().ToLower() == timeCommand)
             {
-                WriteResponse(_client, $"System date: {DateTime.Now.ToString()}");
+                _client.SendString($"System date: {DateTime.Now.ToString()}");
             }
             else
             {
-                WriteResponse(_client, request.ToUpper());
-            }
-        }
-
-        private static string ReadRequest(Socket client)
-        {
-            string data;
-            byte[] buffer = new byte[1500];
-
-            int size = client.Receive(buffer);
-            data = Encoding.UTF8.GetString(buffer, 0, size);
-
-            return data;
-        }
-
-        private static void WriteResponse(Socket client, string response)
-        {
-            var encodedMessage = Encoding.UTF8.GetBytes(response);
-            try
-            {
-                client.Send(encodedMessage);
-            }
-            catch (SocketException ex)
-            {
-                Logger.Log(ex.Message);
+                _client.SendString(request.ToUpper());
             }
         }
     }
