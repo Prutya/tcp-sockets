@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpSockets.Client", "TcpSoc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpSockets.Common", "TcpSockets.Common\TcpSockets.Common.csproj", "{8C845E17-0BE7-435D-8976-B8DC175BDE20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpSockets.StressTest", "TcpSockets.StressTest\TcpSockets.StressTest.csproj", "{1DA4738D-5FFB-41FE-814F-B049C212EE38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8C845E17-0BE7-435D-8976-B8DC175BDE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C845E17-0BE7-435D-8976-B8DC175BDE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C845E17-0BE7-435D-8976-B8DC175BDE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA4738D-5FFB-41FE-814F-B049C212EE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA4738D-5FFB-41FE-814F-B049C212EE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA4738D-5FFB-41FE-814F-B049C212EE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA4738D-5FFB-41FE-814F-B049C212EE38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,7 +15,7 @@ namespace TcpSockets.Server
         {
             Logger.Log("Welcome to .NET TCP sockets server.");
 
-            serverPort = IpConfiguration.PortPrompt();
+            serverPort = Input.PortPrompt();
 
             var listener = new TcpListener(serverIpAddress, serverPort);
             listener.Start();

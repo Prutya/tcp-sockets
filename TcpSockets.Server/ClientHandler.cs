@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Sockets;
-using System.Text;
 using TcpSockets.Common;
 
 namespace TcpSockets.Server
@@ -18,11 +17,15 @@ namespace TcpSockets.Server
 
         public void Handle()
         {
-            Logger.Log($"Connection accepted. Client ip: {_client.RemoteEndPoint}");
-
+            Logger.Log($"New connection. Client endpoint: {_client.RemoteEndPoint}");
+            
             var request = _client.RecieveString();
 
-            if (request.Trim().ToLower() == timeCommand)
+            if (string.IsNullOrEmpty(request))
+            {
+                _client.SendString("Invalid command.");
+            }
+            else if (request.Trim().ToLower() == timeCommand)
             {
                 _client.SendString($"System date: {DateTime.Now.ToString()}");
             }

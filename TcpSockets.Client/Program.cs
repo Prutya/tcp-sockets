@@ -16,7 +16,7 @@ namespace TcpSockets.Client
 
             while (true)
             {
-                serverPort = IpConfiguration.PortPrompt();
+                serverPort = Input.PortPrompt();
 
                 while (true)
                 {
@@ -26,8 +26,9 @@ namespace TcpSockets.Client
                     {
                         ProcessCommand(client);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        Logger.Log(ex.Message);
                         break;
                     }
                 }
@@ -36,8 +37,7 @@ namespace TcpSockets.Client
 
         private static void ProcessCommand(TcpClient client)
         {
-            Console.Write("Please enter a message to be transmitted: ");
-            string message = Console.ReadLine();
+            string message = Input.CommandPrompt("for server");
 
             Logger.Log($"Connecting to {serverIpAddress}:{serverPort}...");
 
@@ -52,14 +52,6 @@ namespace TcpSockets.Client
                 string response = clientSocket.RecieveString();
 
                 Logger.Log($"Server response is: \"{response}\"");
-            }
-            catch (SocketException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {
