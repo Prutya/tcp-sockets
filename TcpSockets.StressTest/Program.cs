@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using TcpSockets.Common;
 
 namespace TcpSockets.StressTest
@@ -25,19 +26,23 @@ namespace TcpSockets.StressTest
 
             for (int i = 0; i < int.MaxValue; i++)
             {
-                TcpClient client = new TcpClient();
-                client.Connect(serverIpAddress, serverPort);
-                Socket clientSocket = client.Client;
+                Task.Run(() =>
+                {
+                    TcpClient client = new TcpClient();
+                    client.Connect(serverIpAddress, serverPort);
+                    Socket clientSocket = client.Client;
 
-                clientSocket.SendString(hackerString);
-                Logger.Log($"Sending message #{i} to the server...");
+                    clientSocket.SendString(hackerString);
+                    Logger.Log($"Sending message #{i} to the server...");
 
-                string response = clientSocket.RecieveString();
-                Logger.Log($"Server response is: \"{response}\"");
+                    string response = clientSocket.RecieveString();
+                    Logger.Log($"Server response is: \"{response}\"");
 
-                client.Close();
+                    client.Close();
+                });
             }
 
+            Task.WaitAll();
             Console.Read();
         }
     }
