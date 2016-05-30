@@ -24,25 +24,19 @@ namespace TcpSockets.StressTest
 
             Thread.Sleep(2000);
 
-            for (int i = 0; i < int.MaxValue; i++)
+            for (int i = 0; i < ushort.MaxValue; i++)
             {
-                Task.Run(() =>
-                {
-                    TcpClient client = new TcpClient();
-                    client.Connect(serverIpAddress, serverPort);
-                    Socket clientSocket = client.Client;
+                TcpClient client = new TcpClient();
+                client.Connect(serverIpAddress, serverPort);
+                Socket clientSocket = client.Client;
 
-                    clientSocket.SendString(hackerString);
-                    Logger.Log($"Sending message #{i} to the server...");
+                clientSocket.SendString(hackerString);
+                Logger.Log($"Sending message #{i} to the server...");
 
-                    string response = clientSocket.RecieveString();
-                    Logger.Log($"Server response is: \"{response}\"");
-
-                    client.Close();
-                });
+                string response = clientSocket.RecieveString();
+                Logger.Log($"Server response is: \"{response}\"");
             }
-
-            Task.WaitAll();
+            
             Console.Read();
         }
     }
