@@ -19,24 +19,26 @@ namespace TcpSockets.StressTest
             Logger.Log("Okay, imagine yourself a cool hacker trying to kill the server.");
 
             serverPort = Input.PortPrompt();
-
-            Logger.Log("Fine, now just relax and watch...");
-
-            Thread.Sleep(2000);
-
+            
             for (int i = 0; i < ushort.MaxValue; i++)
             {
                 TcpClient client = new TcpClient();
-                client.Connect(serverIpAddress, serverPort);
-                Socket clientSocket = client.Client;
+                try
+                {
+                    client.Connect(serverIpAddress, serverPort);
+                    Socket clientSocket = client.Client;
 
-                clientSocket.SendString(hackerString);
-                Logger.Log($"Sending message #{i} to the server...");
+                    clientSocket.SendString(hackerString);
 
-                string response = clientSocket.RecieveString();
-                Logger.Log($"Server response is: \"{response}\"");
+                    string response = clientSocket.RecieveString();
+                    Logger.Log($"Server response is: \"{response}\"");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex.Message);
+                    client.Close();
+                }
             }
-            
             Console.Read();
         }
     }

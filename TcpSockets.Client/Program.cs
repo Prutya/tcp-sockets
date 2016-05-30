@@ -17,46 +17,51 @@ namespace TcpSockets.Client
             while (true)
             {
                 serverPort = Input.PortPrompt();
-
-                while (true)
+                TcpClient client = new TcpClient();
+                try
                 {
-                    TcpClient client = new TcpClient();
+                    client.Connect(serverIpAddress, serverPort);
+                    if (client.Connected == false)
+                    {
+                        Logger.Log($"Connection failed.");
+                    }
+                    else
+                    {
+                        Logger.Log($"Connected to {client.Client.RemoteEndPoint}...");
 
-                    try
-                    {
-                        ProcessCommand(client);
+                        while (true)
+                        {
+                            try
+                            {
+                                ProcessCommand(client.Client);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Log(ex.Message);
+                                client.Close();
+                                break;
+                            }
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.Log(ex.Message);
-                        break;
-                    }
+
+                }
+                catch (SocketException ex)
+                {
+                    Logger.Log(ex.Message);
+                    client.Close();
                 }
             }
         }
 
-        private static void ProcessCommand(TcpClient client)
+        private static void ProcessCommand(Socket client)
         {
             string message = Input.CommandPrompt("for server");
 
-            Logger.Log($"Connecting to {serverIpAddress}:{serverPort}...");
+            Logger.Log($"Sending message to {client.RemoteEndPoint}.");
+            client.SendString(message);
 
-            try
-            {
-                client.Connect(serverIpAddress, serverPort);
-                Socket clientSocket = client.Client;
-
-                Logger.Log("Connection established.");
-                clientSocket.SendString(message);
-
-                string response = clientSocket.RecieveString();
-
-                Logger.Log($"Server response is: \"{response}\"");
-            }
-            finally
-            {
-                client.Close();
-            }
+            string response = client.RecieveString();
+            Logger.Log($"Server response is: \"{response}\"");
         }
     }
 }

@@ -18,8 +18,17 @@ namespace TcpSockets.Server
         public void Handle()
         {
             Logger.Log($"New connection. Client endpoint: {_client.RemoteEndPoint}");
-            
+            while (true)
+            {
+                Respond();
+            }
+        }
+
+        private void Respond()
+        {
             var request = _client.RecieveString();
+
+            Logger.Log($"Recieved new request from {_client.RemoteEndPoint}");
 
             if (string.IsNullOrEmpty(request))
             {

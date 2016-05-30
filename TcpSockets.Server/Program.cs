@@ -28,7 +28,15 @@ namespace TcpSockets.Server
 
                 Task.Run(() =>
                 {
-                    new ClientHandler(client).Handle();
+                    try
+                    {
+                        new ClientHandler(client).Handle();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log(ex.Message);
+                        client.Close();
+                    }
                 });
             }
         }
