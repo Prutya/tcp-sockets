@@ -8,7 +8,7 @@ namespace TcpSockets.Common
         {
             var prevColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.Write($"[{DateTime.UtcNow}] ");
+            Console.Write($"[{DateTime.UtcNow} UTC] ");
             Console.ForegroundColor = prevColor;
             Console.WriteLine($"{message}");
         }

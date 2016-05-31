@@ -20,7 +20,16 @@ namespace TcpSockets.Server
             Logger.Log($"New connection. Client endpoint: {_client.RemoteEndPoint}");
             while (true)
             {
-                Respond();
+                try
+                {
+                    Respond();
+                }
+                catch (Exception)
+                {
+                    Logger.Log("Client disconnected.");
+                    _client.Close();
+                    break;
+                }
             }
         }
 
@@ -28,15 +37,20 @@ namespace TcpSockets.Server
         {
             var request = _client.RecieveString();
 
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request), "Client closed the connection.");
+            }
+
             Logger.Log($"Recieved new request from {_client.RemoteEndPoint}");
 
-            if (string.IsNullOrEmpty(request))
+            if (request.Trim() == string.Empty)
             {
                 _client.SendString("Invalid command.");
             }
             else if (request.Trim().ToLower() == timeCommand)
             {
-                _client.SendString($"System date: {DateTime.Now.ToString()}");
+                _client.SendString($"UTC System date: {DateTime.Now.ToString()}");
             }
             else
             {

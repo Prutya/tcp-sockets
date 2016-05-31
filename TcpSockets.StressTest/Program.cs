@@ -9,8 +9,6 @@ namespace TcpSockets.StressTest
 {
     public class Program
     {
-        private const string hackerString = "time";
-
         private static readonly IPAddress serverIpAddress = IPAddress.Parse("127.0.0.1");
         private static int serverPort = 3000;
 
@@ -18,28 +16,30 @@ namespace TcpSockets.StressTest
         {
             Logger.Log("Okay, imagine yourself a cool hacker trying to kill the server.");
 
-            serverPort = Input.PortPrompt();
-            
-            for (int i = 0; i < ushort.MaxValue; i++)
+            while (true)
             {
-                TcpClient client = new TcpClient();
-                try
-                {
-                    client.Connect(serverIpAddress, serverPort);
-                    Socket clientSocket = client.Client;
+                serverPort = Input.PortPrompt();
 
-                    clientSocket.SendString(hackerString);
+                Logger.Log("Enjoy.");
 
-                    string response = clientSocket.RecieveString();
-                    Logger.Log($"Server response is: \"{response}\"");
-                }
-                catch (Exception ex)
+                Thread.Sleep(1500);
+
+                for (int i = 0; i < ushort.MaxValue; i++)
                 {
-                    Logger.Log(ex.Message);
-                    client.Close();
+                    Logger.Log("Opening new connection...");
+                    TcpClient client = new TcpClient();
+                    try
+                    {
+                        client.Connect(serverIpAddress, serverPort);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log(ex.Message);
+                        client.Close();
+                    }
                 }
             }
-            Console.Read();
+            
         }
     }
 }

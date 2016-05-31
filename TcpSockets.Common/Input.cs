@@ -18,12 +18,12 @@ namespace TcpSockets.Common
             }
             while (!ushort.TryParse(portString, out port));
 
-            return (port);
+            return port;
         }
 
         public static string CommandPrompt(string optional = null)
         {
-            string command = null;
+            string command;
 
             do
             {

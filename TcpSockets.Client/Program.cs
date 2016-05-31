@@ -21,26 +21,19 @@ namespace TcpSockets.Client
                 try
                 {
                     client.Connect(serverIpAddress, serverPort);
-                    if (client.Connected == false)
-                    {
-                        Logger.Log($"Connection failed.");
-                    }
-                    else
-                    {
-                        Logger.Log($"Connected to {client.Client.RemoteEndPoint}...");
+                    Logger.Log($"Connected to {client.Client.RemoteEndPoint}...");
 
-                        while (true)
+                    while (true)
+                    {
+                        try
                         {
-                            try
-                            {
-                                ProcessCommand(client.Client);
-                            }
-                            catch (Exception ex)
-                            {
-                                Logger.Log(ex.Message);
-                                client.Close();
-                                break;
-                            }
+                            ProcessCommand(client.Client);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(ex.Message);
+                            client.Close();
+                            break;
                         }
                     }
 
