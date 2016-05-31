@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
 using TcpSockets.Common;
 
 namespace TcpSockets.StressTest
@@ -20,8 +19,6 @@ namespace TcpSockets.StressTest
             {
                 serverPort = Input.PortPrompt();
 
-                Logger.Log("Enjoy.");
-
                 Thread.Sleep(1500);
 
                 for (int i = 0; i < ushort.MaxValue; i++)
@@ -36,6 +33,7 @@ namespace TcpSockets.StressTest
                     {
                         Logger.Log(ex.Message);
                         client.Close();
+                        break;
                     }
                 }
             }
